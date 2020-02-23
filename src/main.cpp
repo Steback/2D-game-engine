@@ -1,7 +1,19 @@
 #include <iostream>
+#include "Game.h"
+#include "Constants.h"
 
 int main(int argc, char *args[]) {
-    std::cout << "Game is running..." << std::endl;
+    Game* game = new Game();
+
+    game -> initialize( WINDOW_WIDTH, WINDOW_HEIGHT );
+
+    while ( game -> gameISRunning() ) {
+        game -> processInput();
+        game -> update();
+        game -> render();
+    }
+
+    game -> destroy();
 
     return 0;
 }

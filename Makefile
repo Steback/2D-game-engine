@@ -11,7 +11,7 @@ build:
 	-lSDL2_mixer;
 
 clean:
-	rm ./SDL_Game.o;
+	rm ./SDL_Game.o
 
 run:
-	./SDL_Game.o;
+	./SDL_Game.o
