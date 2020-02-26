@@ -11,7 +11,7 @@ class Component {
         virtual ~Component() = default;
         virtual void initialize() {  }
         virtual void update(float deltaTime) {  }
-        virtual void Render() {  }
+        virtual void render() {  }
 };
 
 #endif

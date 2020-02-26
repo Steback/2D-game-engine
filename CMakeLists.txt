@@ -5,18 +5,14 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(EXECUTABLE_OUTPUT_PATH "..")
 
-find_package(SDL2 REQUIRED)
-include_directories( ${SDL2_INCLUDE_DIR} )
+file(GLOB SOURCE_HEADER ./src/*.h )
+file(GLOB SOURCE_FILES ./src/*.cpp )
+file(GLOB SOURCE_COMPONENTS_HEADER ./src/components/*.h )
 
-set(SOURCE_FILES
-        src/main.cpp
-        src/Game.h src/Game.cpp
-        src/Component.h
-        src/Entity.h src/Entity.cpp
-        src/EntityManager.h src/EntityManager.cpp
-        )
+find_library(SDL2 REQUIRED)
+include_directories( ${SDL2_INCLUDE_DIRS} )
 
-add_executable( SDL_Game ${SOURCE_FILES} )
+add_executable( SDL_Game ${SOURCE_FILES} ${SOURCE_HEADER} ${SOURCE_COMPONENTS_HEADER} )
 target_link_libraries( SDL_Game ${SDL2_LIBRARIES} )
 
 set_target_properties(
