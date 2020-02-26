@@ -17,7 +17,7 @@ class Entity {
         std::string name;
         Entity(EntityManager& _manager);
         Entity(EntityManager& _manager, std::string _name);
-        void update(float _deltaTime);
+        void update(float deltaTime);
         void render();
         void destroy();
         bool isActive() const;

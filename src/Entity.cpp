@@ -8,9 +8,9 @@ Entity::Entity(EntityManager &_manager, std::string _name) : manager(_manager), 
     isEntityActive = true;
 }
 
-void Entity::update(float _deltaTime) {
+void Entity::update(float deltaTime) {
     for ( auto& component : components ) {
-        component->update(_deltaTime);
+        component->update(deltaTime);
     }
 }
 
