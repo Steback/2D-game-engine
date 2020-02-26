@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Constants.h"
 #include "Game.h"
+#include "../lib/glm/glm.hpp"
 
 Game::Game() {
     isRunning = false;
@@ -10,10 +11,8 @@ Game::~Game() = default;
 
 bool Game::gameISRunning() const { return isRunning; }
 
-float projectilePosX = 0.0f;
-float projectilePosY = 0.0f;
-float projectileVelX = 10.0f;
-float projectileVelY = 10.0f;
+glm::vec2 projectilePos = glm::vec2(0.0f, 0.0f);
+glm::vec2 projectileVel = glm::vec2(20.0f, 30.0f);
 
 void Game::initialize(int width, int height) {
     if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 ) {
@@ -67,8 +66,23 @@ void Game::processInput() {
 }
 
 void Game::update() {
-    projectilePosX += projectilePosX;
-    projectilePosY += projectilePosY;
+    // wait untill 16ms has ellasped since the last frame
+    while ( !SDL_TICKS_PASSED( SDL_GetTicks(), ticksLastFrame + FRAME_TARGET_TIME ) );
+
+    // Delta time is the diference in ticks from last frame converted to seconds
+    float deltaTime = ( SDL_GetTicks() - (float)ticksLastFrame ) / 1000.0f;
+
+    // Clamp deltaTime to a maximum value
+    deltaTime = ( deltaTime > 0.05f ) ? 0.05f : deltaTime;
+
+    // Sets the new ticks for the current frame to be used in the next pass
+    ticksLastFrame = SDL_GetTicks();
+
+    // Use deltaTime to update my game objects
+    projectilePos = glm::vec2(
+            projectilePos.x + projectileVel.x * deltaTime,
+            projectilePos.y + projectileVel.y * deltaTime
+            );
 }
 
 void Game::render() {
@@ -76,8 +90,8 @@ void Game::render() {
     SDL_RenderClear(renderer);
 
     SDL_Rect projectile {
-        (int)projectilePosX,
-        (int)projectilePosY,
+        (int)projectilePos.x,
+        (int)projectilePos.y,
         10,
         10
     };

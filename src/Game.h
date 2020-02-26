@@ -20,6 +20,7 @@ class Game {
         void update();
         void render();
         void destroy();
+        int ticksLastFrame;
 };
 
 #endif

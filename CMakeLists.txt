@@ -5,9 +5,16 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(EXECUTABLE_OUTPUT_PATH "..")
 
-set(SOURCE_FILES ./src)
+find_package(SDL2 REQUIRED)
+include_directories( ${SDL2_INCLUDE_DIR} )
 
-add_executable(SDL_Game src/main.cpp ${SOURCE_FILES})
+set(SOURCE_FILES
+        src/main.cpp
+        src/Game.h src/Game.cpp
+        )
+
+add_executable( SDL_Game ${SOURCE_FILES} )
+target_link_libraries( SDL_Game ${SDL2_LIBRARIES} )
 
 set_target_properties(
         ${PROJECT_NAME}
