@@ -15,7 +15,7 @@ class Entity {
 
     public:
         std::string name;
-        Entity(EntityManaher& _manager);
+        Entity(EntityManager& _manager);
         Entity(EntityManager& _manager, std::string _name);
         void update(float _deltaTime);
         void render();

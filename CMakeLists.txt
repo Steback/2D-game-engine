@@ -12,7 +12,7 @@ set(SOURCE_FILES
         src/main.cpp
         src/Game.h src/Game.cpp
         src/Component.h
-        src/Entity.h
+        src/Entity.h src/Entity.cpp
         )
 
 add_executable( SDL_Game ${SOURCE_FILES} )

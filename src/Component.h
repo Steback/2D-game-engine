@@ -10,7 +10,7 @@ class Component {
         Entity* owner;
         virtual ~Component();
         virtual void initialize();
-        virtual void update(floar deltaTime);
+        virtual void update(float _deltaTime);
         virtual void Render();
 };
 
