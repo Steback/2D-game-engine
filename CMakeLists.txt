@@ -11,6 +11,8 @@ include_directories( ${SDL2_INCLUDE_DIR} )
 set(SOURCE_FILES
         src/main.cpp
         src/Game.h src/Game.cpp
+        src/Component.h
+        src/Entity.h
         )
 
 add_executable( SDL_Game ${SOURCE_FILES} )
