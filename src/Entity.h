@@ -15,7 +15,7 @@ class Entity {
         EntityManager& manager;
         bool isEntityActive;
         std::vector<Component*> components;
-        std::map<std::type_info*, Components*> componentTypeMap;
+        std::map<const std::type_info*, Component*> componentTypeMap;
 
     public:
         std::string name;
