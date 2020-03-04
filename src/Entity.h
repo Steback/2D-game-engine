@@ -44,9 +44,7 @@ class Entity {
 
         template <typename T>
         bool hasComponent() const {
-            auto it = componentTypeMap.find(T);
-
-            return it != componentTypeMap.end();
+            return false;
         }
 };
 

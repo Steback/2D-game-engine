@@ -19,13 +19,17 @@ bool Game::gameISRunning() const { return isRunning; }
 
 void Game::loadLevel(int levelNumber) {
     // Start including new assets to the assetmanager list
-    std::string textureFilePath = "assets/images/tank-big-right.png";
-    assetManager->addTexture("tank-image", textureFilePath.c_str());
+    assetManager->addTexture("tank-image",std::string("assets/images/tank-big-right.png").c_str());
+    assetManager->addTexture("chopper-image",std::string("assets/images/chopper-spritesheet.png").c_str());
 
     // Start including entities and also components to them
-    Entity& newEntity(manager.addEntity("tank"));
-    newEntity.addComponent<TransformComponent>(0, 0, 20, 20, 32, 32, 1);
-    newEntity.addComponent<SpriteComponent>("tank-image");
+    Entity& tankEntity(manager.addEntity("tank"));
+    tankEntity.addComponent<TransformComponent>(0, 0, 20, 20, 32, 32, 1);
+    tankEntity.addComponent<SpriteComponent>("tank-image");
+
+    Entity& chopperentity(manager.addEntity("chopper"));
+    chopperentity.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    chopperentity.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
 }
 
 void Game::initialize(int width, int height) {
