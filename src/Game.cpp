@@ -8,6 +8,7 @@
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
 SDL_Renderer* Game::renderer;
+SDL_Event Game::event;
 
 Game::Game() {
     isRunning = false;
@@ -72,7 +73,6 @@ void Game::initialize(int width, int height) {
 }
 
 void Game::processInput() {
-    SDL_Event event;
     SDL_PollEvent(&event);
 
     switch ( event.type ) {
