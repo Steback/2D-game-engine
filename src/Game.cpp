@@ -4,6 +4,7 @@
 #include "components/TransformComponent.h"
 #include "AssetManager.h"
 #include "components/SpriteComponent.h"
+#include "components/KeyboardControlComponent.h"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -25,17 +26,21 @@ void Game::loadLevel(int levelNumber) {
     assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
 
     // Start including entities and also components to them
+    Entity& chopperEntity(manager.addEntity("chopper"));
+    chopperEntity.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    chopperEntity.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
+//    chopperEntity.addComponent<KeyboardControlComponent>("up", "down", "right", "left", "space");
+    chopperEntity.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
+
     Entity& tankEntity(manager.addEntity("tank"));
     tankEntity.addComponent<TransformComponent>(0, 0, 20, 20, 32, 32, 1);
     tankEntity.addComponent<SpriteComponent>("tank-image");
 
-    Entity& chopperEntity(manager.addEntity("chopper"));
-    chopperEntity.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
-    chopperEntity.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
-
     Entity& radarEntity(manager.addEntity("radar"));
     radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
     radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, false);
+
+    manager.listAllEntites();
 }
 
 void Game::initialize(int width, int height) {

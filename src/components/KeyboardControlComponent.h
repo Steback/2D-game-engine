@@ -15,10 +15,10 @@ class KeyboardControlComponent : public Component {
         std::string rightKey;
         std::string leftKey;
         std::string shootKey;
-        TransformComponent* tranform;
-        SpriteComponent* sprite;
+        TransformComponent* tranform{};
+        SpriteComponent* sprite{};
 
-        KeyboardControlComponent() {}
+        KeyboardControlComponent() = default;
 
         KeyboardControlComponent(const std::string& _upKey, const std::string& _downKey, const std::string& _rightKey, const std::string& _leftKey, const std::string& _shootKey) {
             upKey = getSDLKeyStringCode(_upKey);
@@ -47,16 +47,45 @@ class KeyboardControlComponent : public Component {
                 std::string keyCode = std::to_string( Game::event.key.keysym.sym );
 
                 if ( keyCode == upKey ) {
-                    // TODO:
+                    sprite->play("UpAnimation");
+                    tranform->velocity.y = -50;
+                    tranform->velocity.x = 0;
                 }
                 if ( keyCode == rightKey ) {
-                    // TODO:
+                    sprite->play("RightAnimation");
+                    tranform->velocity.x = 50;
+                    tranform->velocity.y = 0;
                 }
                 if ( keyCode == downKey ) {
-                    // TODO:
+                    sprite->play("DownAnimation");
+                    tranform->velocity.y = 50;
+                    tranform->velocity.x = 0;
+
                 }
                 if ( keyCode == leftKey ) {
-                    // TODO:
+                    sprite->play("LeftAnimation");
+                    tranform->velocity.x = -50;
+                    tranform->velocity.y = 0;
+                }
+                if ( keyCode == shootKey ) {
+                    // TODO: shot projectile whem 'shoot' key is pressed
+                }
+            }
+
+            if ( Game::event.type == SDL_KEYUP ) {
+                std::string keyCode = std::to_string( Game::event.key.keysym.sym );
+
+                if ( keyCode == upKey ) {
+                    tranform->velocity.y = 0;
+                }
+                if ( keyCode == rightKey ) {
+                    tranform->velocity.x = 0;
+                }
+                if ( keyCode == downKey ) {
+                    tranform->velocity.y = 0;
+                }
+                if ( keyCode == leftKey ) {
+                    tranform->velocity.x = 0;
                 }
                 if ( keyCode == shootKey ) {
                     // TODO:
