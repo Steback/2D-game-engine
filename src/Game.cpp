@@ -1,13 +1,15 @@
 #include <iostream>
 #include "Constants.h"
 #include "Game.h"
-#include "components/TransformComponent.h"
 #include "AssetManager.h"
+#include "Map.h"
+#include "components/TransformComponent.h"
 #include "components/SpriteComponent.h"
 #include "components/KeyboardControlComponent.h"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
+Map* map;
 SDL_Renderer* Game::renderer;
 SDL_Event Game::event;
 
@@ -24,6 +26,10 @@ void Game::loadLevel(int levelNumber) {
     assetManager->addTexture("tank-image",std::string("assets/images/tank-big-right.png").c_str());
     assetManager->addTexture("chopper-image",std::string("assets/images/chopper-spritesheet.png").c_str());
     assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
+    assetManager->addTexture("jungle-tiletexture", std::string("assets/tilemaps/jungle.png").c_str());
+
+    map = new Map("jungle-tiletexture", 2, 32);
+    map->loadMap("assets/tilemaps/jungle.map", 25, 20);
 
     // Start including entities and also components to them
     Entity& chopperEntity(manager.addEntity("chopper"));
@@ -130,4 +136,5 @@ void Game::destroy() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+    delete assetManager;
 }

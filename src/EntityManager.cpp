@@ -24,7 +24,7 @@ void EntityManager::render() {
 }
 
 Entity & EntityManager::addEntity(std::string entityName) {
-    auto* entity = new Entity(*this, entityName);
+    auto* entity = new Entity(*this, std::move(entityName));
     entities.emplace_back(entity);
     return *entity;
 }
