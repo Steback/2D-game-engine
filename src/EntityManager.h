@@ -14,8 +14,9 @@ class EntityManager {
         void update(float deltaTime);
         void render();
         bool hasNoEntities();
-        Entity& addEntity(std::string entityName);
+        Entity& addEntity(std::string entityName, LayerType _layer);
         std::vector<Entity*> getEntities() const;
+        std::vector<Entity*> getEntitiesLayer(LayerType _layer) const;
         unsigned int getEntityCount() const;
         void listAllEntites() const;
 };

@@ -4,10 +4,10 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "Constants.h"
 #include "EntityManager.h"
 #include "Component.h"
 
-class Component;
 class EntityManager;
 
 class Entity {
@@ -19,8 +19,9 @@ class Entity {
 
     public:
         std::string name;
+        LayerType layer;
         Entity(EntityManager& _manager);
-        Entity(EntityManager& _manager, std::string _name);
+        Entity(EntityManager& _manager, std::string _name, LayerType _layer);
         void update(float deltaTime);
         void render();
         void destroy();
@@ -41,11 +42,6 @@ class Entity {
 
         template <typename T>
         T* getComponent() { return static_cast<T*>(componentTypeMap[&typeid(T)]); }
-
-        template <typename T>
-        bool hasComponent() const {
-            return false;
-        }
 };
 
 #endif

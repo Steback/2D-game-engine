@@ -1,6 +1,8 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include "Entity.h"
+
 class Entity;
 
 class Component {
