@@ -12,6 +12,7 @@ AssetManager* Game::assetManager = new AssetManager(&manager);
 Map* map;
 SDL_Renderer* Game::renderer;
 SDL_Event Game::event;
+SDL_Rect Game::camera = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 
 Game::Game() {
     isRunning = false;
@@ -20,6 +21,8 @@ Game::Game() {
 Game::~Game() = default;
 
 bool Game::gameISRunning() const { return isRunning; }
+
+Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
 
 void Game::loadLevel(int levelNumber) {
     // Start including new assets to the assetmanager list
@@ -32,11 +35,9 @@ void Game::loadLevel(int levelNumber) {
     map->loadMap("assets/tilemaps/jungle.map", 25, 20);
 
     // Start including entities and also components to them
-    Entity& chopperEntity(manager.addEntity("chopper", PLAYER_LAYER));
-    chopperEntity.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
-    chopperEntity.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
-//    chopperEntity.addComponent<KeyboardControlComponent>("up", "down", "right", "left", "space");
-    chopperEntity.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
+    player.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    player.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
+    player.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
 
     Entity& tankEntity(manager.addEntity("tank", ENEMY_LAYER));
     tankEntity.addComponent<TransformComponent>(0, 0, 20, 20, 32, 32, 1);
@@ -44,7 +45,7 @@ void Game::loadLevel(int levelNumber) {
 
     Entity& radarEntity(manager.addEntity("radar", UI_LAYER));
     radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
-    radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, false);
+    radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, true);
 
     manager.listAllEntites();
 }
@@ -79,8 +80,6 @@ void Game::initialize(int width, int height) {
     loadLevel(0);
 
     isRunning = true;
-
-    return ;
 }
 
 void Game::processInput() {
@@ -103,6 +102,18 @@ void Game::processInput() {
     }
 }
 
+void Game::handleCameraMove() {
+    auto* mainPlayerTransform = player.getComponent<TransformComponent>();
+
+    camera.x = static_cast<int>(mainPlayerTransform->position.x) - static_cast<int>( WINDOW_WIDTH / 2 );
+    camera.y = static_cast<int>(mainPlayerTransform->position.y) - static_cast<int>( WINDOW_HEIGHT / 2 );
+
+    camera.x = camera.x < 0 ? 0 : camera.x;
+    camera.y = camera.y < 0 ? 0 : camera.y;
+    camera.x = camera.x > camera.w ? camera.w : camera.x;
+    camera.y = camera.y > camera.h ? camera.h : camera.y;
+}
+
 void Game::update() {
     // wait untill 16ms has ellasped since the last frame
     while ( !SDL_TICKS_PASSED( SDL_GetTicks(), ticksLastFrame + FRAME_TARGET_TIME ) );
@@ -117,6 +128,8 @@ void Game::update() {
     ticksLastFrame = SDL_GetTicks();
 
     manager.update(deltaTime);
+
+    handleCameraMove();
 }
 
 void Game::render() {

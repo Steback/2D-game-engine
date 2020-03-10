@@ -36,8 +36,8 @@ class TileComponent : public Component {
         }
 
         void update(float deltatime) override  {
-            // TODO: here is where we will take care of the tile positions
-            // based on the camara control that will keep moving around
+            destinationRectangle.x = static_cast<int>(position.x) - Game::camera.x;
+            destinationRectangle.y = static_cast<int>(position.y) - Game::camera.y;
         }
 
         void render() override {
