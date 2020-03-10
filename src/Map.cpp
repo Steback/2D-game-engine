@@ -1,6 +1,5 @@
 #include "Map.h"
 #include "Game.h"
-#include "EntityManager.h"
 #include "components/TileComponent.h"
 #include <fstream>
 
@@ -40,4 +39,5 @@ void Map::loadMap(const std::string& _filePath, int _mapSizeX, int _mapSizeY) {
 void Map::addTile(int _sourceRectX, int _sourceRectY, int _x, int _y) {
     Entity& newTile(manager.addEntity("Tile", TILEMAP_LAYER));
     newTile.addComponent<TileComponent>(_sourceRectX, _sourceRectY, _x, _y, tilesize, scale, textureID);
+    tilemap.emplace_back(newTile);
 }

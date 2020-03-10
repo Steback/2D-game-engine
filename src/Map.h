@@ -2,12 +2,15 @@
 #define MAP_H
 
 #include <string>
+#include <vector>
+#include "EntityManager.h"
 
 class Map {
     private:
         std::string textureID;
         int scale;
         int tilesize;
+        std::vector<Entity> tilemap;
 
     public:
         Map(std::string _textureID, int _scale, int _tileSize);

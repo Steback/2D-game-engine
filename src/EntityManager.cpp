@@ -1,6 +1,14 @@
 #include <iostream>
 #include "EntityManager.h"
 
+EntityManager::~EntityManager() {
+    for ( auto & entity: entities ) {
+        delete entity;
+    }
+
+    entities.clear();
+}
+
 void EntityManager::clearData() {
     for ( auto& entity : entities ) {
         entity->destroy();

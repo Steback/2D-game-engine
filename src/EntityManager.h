@@ -10,6 +10,7 @@ class EntityManager {
         std::vector<Entity*> entities;
 
     public:
+        ~EntityManager();
         void clearData();
         void update(float deltaTime);
         void render();

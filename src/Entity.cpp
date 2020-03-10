@@ -9,6 +9,10 @@ Entity::Entity(EntityManager &_manager, std::string _name, LayerType _layer) : m
     isEntityActive = true;
 }
 
+Entity::~Entity() {
+    components.clear();
+    componentTypeMap.clear();
+}
 void Entity::update(float deltaTime) {
     for ( auto& component : components ) {
         component->update(deltaTime);

@@ -22,6 +22,7 @@ class Entity {
         LayerType layer;
         Entity(EntityManager& _manager);
         Entity(EntityManager& _manager, std::string _name, LayerType _layer);
+        ~Entity();
         void update(float deltaTime);
         void render();
         void destroy();
