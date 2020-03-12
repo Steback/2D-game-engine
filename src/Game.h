@@ -27,6 +27,7 @@ class Game {
         void initialize(int width, int height);
         void processInput();
         void handleCameraMove();
+        void checkCollision();
         void update();
         void render();
         void destroy();

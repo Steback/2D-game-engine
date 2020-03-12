@@ -6,6 +6,7 @@
 #include "components/TransformComponent.h"
 #include "components/SpriteComponent.h"
 #include "components/KeyboardControlComponent.h"
+#include "components/ColliderComponent.h"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -38,16 +39,18 @@ void Game::loadLevel(int levelNumber) {
     player.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
     player.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
     player.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
+    player.addComponent<ColliderComponent>("player", 240, 106, 32, 32);
 
     Entity& tankEntity(manager.addEntity("tank", ENEMY_LAYER));
     tankEntity.addComponent<TransformComponent>(0, 0, 20, 20, 32, 32, 1);
     tankEntity.addComponent<SpriteComponent>("tank-image");
+    tankEntity.addComponent<ColliderComponent>("enemy", 150, 495, 32, 32);
 
     Entity& radarEntity(manager.addEntity("radar", UI_LAYER));
     radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
     radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, true);
 
-    manager.listAllEntites();
+//    manager.listAllEntites();
 }
 
 void Game::initialize(int width, int height) {
@@ -114,6 +117,15 @@ void Game::handleCameraMove() {
     camera.y = camera.y > camera.h ? camera.h : camera.y;
 }
 
+void Game::checkCollision() {
+    std::string collisionTagType = manager.checkEntityCollisions(player);
+
+    if( collisionTagType == "enemy" ) {
+        // TODO: do something when  collision is identied with an enemy
+        isRunning = false;
+    }
+}
+
 void Game::update() {
     // wait untill 16ms has ellasped since the last frame
     while ( !SDL_TICKS_PASSED( SDL_GetTicks(), ticksLastFrame + FRAME_TARGET_TIME ) );
@@ -130,6 +142,8 @@ void Game::update() {
     manager.update(deltaTime);
 
     handleCameraMove();
+
+    checkCollision();
 }
 
 void Game::render() {
