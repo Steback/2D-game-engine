@@ -67,20 +67,37 @@ void EntityManager::listAllEntites() const {
     }
 }
 
-std::string EntityManager::checkEntityCollisions(Entity& _entity) const {
-    auto* entityCollider = _entity.getComponent<ColliderComponent>();
+CollisionType EntityManager::checkCollisions() const {
+    for ( int i = 0; i < entities.size() - 1; i++ ) {
+        auto& thisEntity = entities[i];
 
-    for (auto& entity : entities ) {
-        if ( entity->name != _entity.name && entity->name != "Tile" ) {
-            if ( entity->hasComponent<ColliderComponent>() ) {
-                auto* otherCollider = entity->getComponent<ColliderComponent>();
+        if ( thisEntity->hasComponent<ColliderComponent>() ) {
+            auto* thisCollider = thisEntity->getComponent<ColliderComponent>();
 
-                if ( Collision::checkRectangleCollision(entityCollider->collider, otherCollider->collider) ) {
-                    return otherCollider->colliderTag;
+            for ( int j = i + 1; j < entities.size(); j++ ) {
+                auto& thatEntity = entities[j];
+
+                if ( thisEntity->name != thatEntity->name && thatEntity->hasComponent<ColliderComponent>() ) {
+                    auto* thatCollider = thatEntity->getComponent<ColliderComponent>();
+
+                    if ( Collision::checkRectangleCollision(thisCollider->collider, thatCollider->collider) ) {
+                        if ( thisCollider->colliderTag == "PLAYER" && thatCollider->colliderTag == "ENEMY" ) {
+                            return PLAYER_ENEMY_COLLISION;
+                        }
+                        if ( thisCollider->colliderTag == "PLAYER" && thatCollider->colliderTag == "PROJECTILE" ) {
+                            return PLAYER_PROJECTILE_COLLISION;
+                        }
+                        if ( thisCollider->colliderTag == "ENEMY" && thatCollider->colliderTag == "FRIENDLY_PROJECTILE" ) {
+                            return ENEMY_PROJECTILE_COLLISION;
+                        }
+                        if ( thisCollider->colliderTag == "PLAYER" && thatCollider->colliderTag == "LEVEL_COMPLETE" ) {
+                            return PLAYER_LEVEL_COMPLETE_COLLISION;
+                        }
+                    }
                 }
             }
         }
     }
 
-    return std::string();
+    return NO_COLLISION;
 }
