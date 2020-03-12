@@ -13,7 +13,7 @@ class AssetManager;
 class Game {
     private:
         bool isRunning;
-        SDL_Window* window;
+        SDL_Window* window{};
 
     public:
         static SDL_Renderer* renderer;
@@ -31,7 +31,7 @@ class Game {
         void update();
         void render();
         void destroy();
-        int ticksLastFrame;
+        int ticksLastFrame{};
 };
 
 #endif

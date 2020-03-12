@@ -6,6 +6,7 @@
 #include "../Game.h"
 #include "../EntityManager.h"
 #include "TransformComponent.h"
+#include "SpriteComponent.h"
 
 class ColliderComponent : public Component {
     public:
@@ -14,9 +15,13 @@ class ColliderComponent : public Component {
         SDL_Rect sourceRectangle{};
         SDL_Rect destinationRectangle{};
         TransformComponent* transform{};
+        SDL_Texture * colliderTexture;
+        static bool isDebugger;
 
         ColliderComponent(std::string _colliderTag, int _x, int _y, int _width, int _height)
-            : colliderTag( std::move(_colliderTag) ), collider( {_x, _y, _width, _height} ) {  }
+            : colliderTag( std::move(_colliderTag) ), collider( {_x, _y, _width, _height} ) {
+            colliderTexture = Game::assetManager->getTexture("collision-texture");
+        }
 
         void initialize() override {
             if ( owner->hasComponent<TransformComponent>() ) {
@@ -33,6 +38,12 @@ class ColliderComponent : public Component {
             collider.h = transform->height * transform->scale;
             destinationRectangle.x = collider.x - Game::camera.x;
             destinationRectangle.y = collider.y - Game::camera.y;
+        }
+
+        void render() override {
+            if ( isDebugger ) {
+                TextureManager::draw(colliderTexture, sourceRectangle, destinationRectangle, SDL_FLIP_NONE);
+            }
         }
 };
 

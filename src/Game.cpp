@@ -14,6 +14,7 @@ Map* map;
 SDL_Renderer* Game::renderer;
 SDL_Event Game::event;
 SDL_Rect Game::camera = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+bool ColliderComponent::isDebugger = false;
 
 Game::Game() {
     isRunning = false;
@@ -31,6 +32,7 @@ void Game::loadLevel(int levelNumber) {
     assetManager->addTexture("chopper-image",std::string("assets/images/chopper-spritesheet.png").c_str());
     assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
     assetManager->addTexture("jungle-tiletexture", std::string("assets/tilemaps/jungle.png").c_str());
+    assetManager->addTexture("collision-texture",std::string("assets/images/collision-texture.png").c_str());
 
     map = new Map("jungle-tiletexture", 2, 32);
     map->loadMap("assets/tilemaps/jungle.map", 25, 20);
@@ -60,7 +62,7 @@ void Game::initialize(int width, int height) {
     }
 
     window = SDL_CreateWindow(
-            NULL,
+            nullptr,
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             width,
@@ -96,6 +98,10 @@ void Game::processInput() {
         case SDL_KEYDOWN:
             if ( event.key.keysym.sym == SDLK_ESCAPE ) {
                 isRunning = false;
+            }
+
+            if ( event.key.keysym.sym == SDLK_F3 ) {
+               ColliderComponent::isDebugger = !ColliderComponent::isDebugger;
             }
 
             break;
@@ -162,6 +168,7 @@ void Game::render() {
 void Game::destroy() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_Quit();
     delete assetManager;
+    delete map;
+    SDL_Quit();
 }

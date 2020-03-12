@@ -2,9 +2,7 @@
 
 AssetManager::AssetManager(EntityManager *_manager) : manager(_manager) {  }
 
-AssetManager::~AssetManager() {
-
-}
+AssetManager::~AssetManager() = default;
 
 void AssetManager::clearData() {
     textures.clear();

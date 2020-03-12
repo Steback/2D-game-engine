@@ -12,7 +12,7 @@ class AssetManager {
         std::map<std::string, SDL_Texture*> textures;
 
     public:
-        AssetManager(EntityManager* _manager);
+        explicit AssetManager(EntityManager* _manager);
         ~AssetManager();
         void clearData();
         void addTexture(const std::string& textureID, const char* filePath);
