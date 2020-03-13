@@ -7,6 +7,7 @@
 #include "components/SpriteComponent.h"
 #include "components/KeyboardControlComponent.h"
 #include "components/ColliderComponent.h"
+#include "components/LabelComponent.h"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -24,47 +25,13 @@ Game::~Game() = default;
 
 bool Game::gameISRunning() const { return isRunning; }
 
-Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
-
-void Game::loadLevel(int levelNumber) {
-    // Start including new assets to the assetmanager list
-    assetManager->addTexture("tank-image",std::string("assets/images/tank-big-right.png").c_str());
-    assetManager->addTexture("chopper-image",std::string("assets/images/chopper-spritesheet.png").c_str());
-    assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
-    assetManager->addTexture("jungle-tiletexture", std::string("assets/tilemaps/jungle.png").c_str());
-    assetManager->addTexture("collision-texture",std::string("assets/images/collision-texture.png").c_str());
-    assetManager->addTexture("heliport-image", std::string("./assets/images/heliport.png").c_str());
-//    assetManager->addTexture("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
-
-    map = new Map("jungle-tiletexture", 2, 32);
-    map->loadMap("assets/tilemaps/jungle.map", 25, 20);
-
-    // Start including entities and also components to them
-    player.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
-    player.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
-    player.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
-    player.addComponent<ColliderComponent>("PLAYER", 240, 106, 32, 32);
-
-    Entity& tankEntity(manager.addEntity("tank", ENEMY_LAYER));
-    tankEntity.addComponent<TransformComponent>(150, 495, 5, 0, 32, 32, 1);
-    tankEntity.addComponent<SpriteComponent>("tank-image");
-    tankEntity.addComponent<ColliderComponent>("ENEMY", 150, 495, 32, 32);
-
-    Entity& heliport(manager.addEntity("Heliport", OBSTACLE_LAYER));
-    heliport.addComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
-    heliport.addComponent<SpriteComponent>("heliport-image");
-    heliport.addComponent<ColliderComponent>("LEVEL_COMPLETE", 470, 420, 32, 32);
-
-    Entity& radarEntity(manager.addEntity("radar", UI_LAYER));
-    radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
-    radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, true);
-
-//    manager.listAllEntites();
-}
-
 void Game::initialize(int width, int height) {
     if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 ) {
         std::cerr << "Error Initializing SDL." <<  std::endl;
+        return ;
+    }
+    if ( TTF_Init() != 0 ) {
+        std::cerr << "Error Initializing SDL_TTF." <<  std::endl;
         return ;
     }
 
@@ -92,6 +59,45 @@ void Game::initialize(int width, int height) {
     loadLevel(0);
 
     isRunning = true;
+}
+
+Entity& player(manager.addEntity("chopper", PLAYER_LAYER));
+
+void Game::loadLevel(int levelNumber) {
+    // Start including new assets to the assetmanager list
+    assetManager->addTexture("tank-image",std::string("assets/images/tank-big-right.png").c_str());
+    assetManager->addTexture("chopper-image",std::string("assets/images/chopper-spritesheet.png").c_str());
+    assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
+    assetManager->addTexture("jungle-tiletexture", std::string("assets/tilemaps/jungle.png").c_str());
+    assetManager->addTexture("collision-texture",std::string("assets/images/collision-texture.png").c_str());
+    assetManager->addTexture("heliport-image", std::string("./assets/images/heliport.png").c_str());
+    assetManager->addFont("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
+
+    map = new Map("jungle-tiletexture", 2, 32);
+    map->loadMap("assets/tilemaps/jungle.map", 25, 20);
+
+    // Start including entities and also components to them
+    player.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    player.addComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
+    player.addComponent<KeyboardControlComponent>("w", "s", "d", "a", "space");
+    player.addComponent<ColliderComponent>("PLAYER", 240, 106, 32, 32);
+
+    Entity& tankEntity(manager.addEntity("tank", ENEMY_LAYER));
+    tankEntity.addComponent<TransformComponent>(150, 495, 5, 0, 32, 32, 1);
+    tankEntity.addComponent<SpriteComponent>("tank-image");
+    tankEntity.addComponent<ColliderComponent>("ENEMY", 150, 495, 32, 32);
+
+    Entity& heliport(manager.addEntity("Heliport", OBSTACLE_LAYER));
+    heliport.addComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
+    heliport.addComponent<SpriteComponent>("heliport-image");
+    heliport.addComponent<ColliderComponent>("LEVEL_COMPLETE", 470, 420, 32, 32);
+
+    Entity& radarEntity(manager.addEntity("radar", UI_LAYER));
+    radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
+    radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, true);
+
+    Entity& labelLevelName(manager.addEntity("labelLevelName", UI_LAYER));
+    labelLevelName.addComponent<TextLabelComponent>(10, 10, "First Level...", "charriot-font", WHITE_COLOR);
 }
 
 void Game::processInput() {

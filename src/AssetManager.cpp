@@ -13,3 +13,9 @@ void AssetManager::addTexture(const std::string& textureID, const char *filePath
 }
 
 SDL_Texture * AssetManager::getTexture(const std::string& textureID) { return textures[textureID]; }
+
+void AssetManager::addFont(const std::string& fontID, const char *filePath, int fontSize) {
+    fonts.emplace(fontID, FontManager::loadFont(filePath, fontSize));
+}
+
+TTF_Font * AssetManager::getFont(const std::string &fontID) { return fonts[fontID]; }
