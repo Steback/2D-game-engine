@@ -8,6 +8,7 @@
 #include "components/KeyboardControlComponent.h"
 #include "components/ColliderComponent.h"
 #include "components/LabelComponent.h"
+#include "components/ProjectileEmitterComponent.h"
 
 EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
@@ -70,7 +71,8 @@ void Game::loadLevel(int levelNumber) {
     assetManager->addTexture("radar-image",std::string("assets/images/radar.png").c_str());
     assetManager->addTexture("jungle-tiletexture", std::string("assets/tilemaps/jungle.png").c_str());
     assetManager->addTexture("collision-texture",std::string("assets/images/collision-texture.png").c_str());
-    assetManager->addTexture("heliport-image", std::string("./assets/images/heliport.png").c_str());
+    assetManager->addTexture("heliport-image", std::string("assets/images/heliport.png").c_str());
+    assetManager->addTexture("projectile-image", std::string("assets/images/bullet-enemy.png").c_str());
     assetManager->addFont("charriot-font", std::string("./assets/fonts/charriot.ttf").c_str(), 14);
 
     map = new Map("jungle-tiletexture", 2, 32);
@@ -83,9 +85,15 @@ void Game::loadLevel(int levelNumber) {
     player.addComponent<ColliderComponent>("PLAYER", 240, 106, 32, 32);
 
     Entity& tankEntity(manager.addEntity("tank", ENEMY_LAYER));
-    tankEntity.addComponent<TransformComponent>(150, 495, 5, 0, 32, 32, 1);
+    tankEntity.addComponent<TransformComponent>(150, 495, 0, 0, 32, 32, 1);
     tankEntity.addComponent<SpriteComponent>("tank-image");
     tankEntity.addComponent<ColliderComponent>("ENEMY", 150, 495, 32, 32);
+
+    Entity& projectile(manager.addEntity("projectile", PROJECTILE_LAYER));
+    projectile.addComponent<TransformComponent>(150+16, 495+16, 0, 0, 4, 4, 1);
+    projectile.addComponent<SpriteComponent>("projectile-image");
+    projectile.addComponent<ColliderComponent>("PROJECTILE", 150+16, 495+16, 4, 4);
+    projectile.addComponent<ProjectileEmitterComponent>(50, 270, 200, true);
 
     Entity& heliport(manager.addEntity("Heliport", OBSTACLE_LAYER));
     heliport.addComponent<TransformComponent>(470, 420, 0, 0, 32, 32, 1);
@@ -140,6 +148,9 @@ void Game::checkCollision() {
     CollisionType collisionTagType = manager.checkCollisions();
 
     if (collisionTagType == PLAYER_ENEMY_COLLISION) {
+        processGameOver();
+    }
+    if (collisionTagType == PLAYER_PROJECTILE_COLLISION) {
         processGameOver();
     }
     if (collisionTagType == PLAYER_LEVEL_COMPLETE_COLLISION) {
