@@ -9,7 +9,7 @@ Entity::Entity(EntityManager &_manager, std::string _name, LayerType _layer) : m
     isEntityActive = true;
 }
 
-Entity::~Entity() = default;
+Entity::~Entity() = default;;
 
 void Entity::update(float deltaTime) {
     for ( auto& component : components ) {
