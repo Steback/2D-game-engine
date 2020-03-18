@@ -17,6 +17,7 @@ SDL_Renderer* Game::renderer;
 SDL_Event Game::event;
 SDL_Rect Game::camera = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
 bool ColliderComponent::isDebugger = false;
+Entity* mainPlayer = nullptr;
 
 Game::Game() {
     isRunning = false;
@@ -57,21 +58,20 @@ void Game::initialize(int width, int height) {
         return ;
     }
 
-    loadLevel(0);
+    loadLevel(1);
 
     isRunning = true;
 }
 
 void Game::loadLevel(int levelNumber) {
-   sol::state lua;
-   lua.open_libraries(sol::lib::base, sol::lib::os, sol::lib::math);
+    sol::state lua;
+    lua.open_libraries(sol::lib::base, sol::lib::os, sol::lib::math);
 
    std::string levelName = "level" + std::to_string(levelNumber);
    lua.script_file("assets/scripts/" + levelName + ".lua");
 
    sol::table levelData = lua[levelName];
-
-    
+   sol::table levelAssets = levelData["assets"];
 }
 
 void Game::processInput() {
@@ -99,15 +99,16 @@ void Game::processInput() {
 }
 
 void Game::handleCameraMove() {
-    auto* mainPlayerTransform = player.getComponent<TransformComponent>();
+    if ( mainPlayer ) {
+        auto* mainPlayerTransform = mainPlayer->getComponent<TransformComponent>();
+        camera.x = static_cast<int>(mainPlayerTransform->position.x) - static_cast<int>( WINDOW_WIDTH / 2 );
+        camera.y = static_cast<int>(mainPlayerTransform->position.y) - static_cast<int>( WINDOW_HEIGHT / 2 );
 
-    camera.x = static_cast<int>(mainPlayerTransform->position.x) - static_cast<int>( WINDOW_WIDTH / 2 );
-    camera.y = static_cast<int>(mainPlayerTransform->position.y) - static_cast<int>( WINDOW_HEIGHT / 2 );
-
-    camera.x = camera.x < 0 ? 0 : camera.x;
-    camera.y = camera.y < 0 ? 0 : camera.y;
-    camera.x = camera.x > camera.w ? camera.w : camera.x;
-    camera.y = camera.y > camera.h ? camera.h : camera.y;
+        camera.x = camera.x < 0 ? 0 : camera.x;
+        camera.y = camera.y < 0 ? 0 : camera.y;
+        camera.x = camera.x > camera.w ? camera.w : camera.x;
+        camera.y = camera.y > camera.h ? camera.h : camera.y;
+    }
 }
 
 void Game::checkCollision() {

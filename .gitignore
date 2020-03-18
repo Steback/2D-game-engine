@@ -3,6 +3,7 @@
 
 # Cmake
 cmake-build-debug/
+buil/
 
 # C++
 *.o

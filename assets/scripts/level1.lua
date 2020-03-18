@@ -1,4 +1,4 @@
-Level1 = {
+level1 = {
     assets = {
         [0] = { type="texture", id = "terrain-texture-day", file = "./assets/tilemaps/jungle.png" },
         [1] = { type="texture", id = "terrain-texture-night", file = "./assets/tilemaps/jungle-night.png" },
