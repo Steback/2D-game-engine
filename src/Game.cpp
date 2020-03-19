@@ -70,8 +70,30 @@ void Game::loadLevel(int levelNumber) {
    std::string levelName = "level" + std::to_string(levelNumber);
    lua.script_file("assets/scripts/" + levelName + ".lua");
 
+   // LOADS ASSETS FORM LUA CONFIG FILE
    sol::table levelData = lua[levelName];
    sol::table levelAssets = levelData["assets"];
+
+   unsigned int assetIndex = 0;
+
+   while ( true ) {
+       sol::optional<sol::table> existsAssetsIndexNode = levelAssets[assetIndex];
+
+       if ( existsAssetsIndexNode == sol::nullopt ) {
+           break;
+       } else {
+           sol::table asset = levelAssets[assetIndex];
+           std::string assetType = asset["type"];
+
+           if ( assetType == "texture" ) {
+               std::string assetID = asset["id"];
+               std::string assetFile = asset["file"];
+               assetManager->addTexture(assetID, assetFile.c_str());
+           }
+
+           assetIndex++;
+       }
+   }
 }
 
 void Game::processInput() {
