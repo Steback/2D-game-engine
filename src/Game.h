@@ -24,10 +24,10 @@ class Game {
         Game();
         ~Game();
         bool gameISRunning() const;
-        void loadLevel(int levelNumber);
+        static void loadLevel(int levelNumber);
         void initialize(int width, int height);
         void processInput();
-        void handleCameraMove();
+        static void handleCameraMove();
         void checkCollision();
         void processGameOver();
         void processNextLevel(int _levelNumber);

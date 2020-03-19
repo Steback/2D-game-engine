@@ -5,15 +5,15 @@
 int main(int argc, char *args[]) {
     Game* game = new Game();
 
-    game -> initialize( WINDOW_WIDTH, WINDOW_HEIGHT );
+    game->initialize( WINDOW_WIDTH, WINDOW_HEIGHT );
 
     while ( game -> gameISRunning() ) {
-        game -> processInput();
-        game -> update();
-        game -> render();
+        game->processInput();
+        game->update();
+        game->render();
     }
 
-    game -> destroy();
+    game->destroy();
 
     delete game;
 

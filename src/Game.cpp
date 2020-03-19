@@ -70,8 +70,9 @@ void Game::loadLevel(int levelNumber) {
    std::string levelName = "level" + std::to_string(levelNumber);
    lua.script_file("assets/scripts/" + levelName + ".lua");
 
-   // LOADS ASSETS FORM LUA CONFIG FILE
    sol::table levelData = lua[levelName];
+
+   // LOADS ASSETS FORM LUA CONFIG FILE
    sol::table levelAssets = levelData["assets"];
 
    unsigned int assetIndex = 0;
@@ -94,6 +95,23 @@ void Game::loadLevel(int levelNumber) {
            assetIndex++;
        }
    }
+
+   // LOADS MAP FORM LUA CONFIG FILE
+   sol::table levelMap = levelData["map"];
+   std::string mapTextureID = levelMap["textureAssetId"];
+   std::string mapFile = levelMap["file"];
+
+   map = new Map(
+           mapTextureID,
+           static_cast<int>( levelMap["scale"] ),
+           static_cast<int>( levelMap["tileSize"] )
+           );
+
+   map->loadMap(
+           mapFile,
+           static_cast<int>( levelMap["mapSizeX"] ),
+           static_cast<int>( levelMap["mapSizeY"] )
+           );
 }
 
 void Game::processInput() {
