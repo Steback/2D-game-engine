@@ -4,7 +4,7 @@
 
 A simple game that I learned in the [Fundamentals of 2D Game Engines with C++ SDL and Lua]( https://www.udemy.com/course/cpp-2d-game-engine/ ) course. In the game i use SDL2 for the game engine, and Lua for data and script loading.
 
-In the future, I plan to create create a map editor for the game, using C ++ and SDL2.
+In the future, I plan to create a map editor for the game, using C ++ and SDL2.
 
 ## Dependences
 1. [SDL2]( https://www.libsdl.org/ )
@@ -13,5 +13,5 @@ In the future, I plan to create create a map editor for the game, using C ++ and
 4. [OpenGL Mathematics(GLM)]( https://glm.g-truc.net/0.9.9/index.html )
 
 ## Folders
-In the folder assets/scripts is the lua files.
-In lib folder are the files of GLM and Lua. in the lib/lua folder are de files for Lua and single file sol.
+In the folder assets/scripts are the Lua files.
+In lib folder are the files of GLM and Lua. The lib/lua folder contains the lua headers and sol single header.
