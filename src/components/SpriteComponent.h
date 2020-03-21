@@ -30,6 +30,12 @@ class SpriteComponent : public Component {
             setTexture(assetTextureID);
         }
 
+        explicit SpriteComponent(const std::string& assetTextureID,  bool _isFixed) {
+            isAnimated = false;
+            isFixed = _isFixed;
+            setTexture(assetTextureID);
+        }
+
         SpriteComponent(const std::string& _id, int _numframes, int _animationSpeed, bool _hasDirections, bool _isFixed) {
             isAnimated = true;
             numFrames = _numframes;
