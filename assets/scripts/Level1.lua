@@ -8,7 +8,7 @@ local mapTextureAssetId = "terrain-texture-day"
 ----------------------------------------------------
 -- Use a night-map or a day-map texture (9am-9pm)
 ----------------------------------------------------
-if currentSystemHour > 9 and currentSystemHour < 20 then
+if currentSystemHour > 9 and currentSystemHour < 21 then
     mapTextureAssetId = "terrain-texture-day"
 else
     mapTextureAssetId = "terrain-texture-night"
