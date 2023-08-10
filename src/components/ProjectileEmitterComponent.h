@@ -1,7 +1,7 @@
 #ifndef PROJECTILE_EMITTER_COMPONENT_H
 #define PROJECTILE_EMITTER_COMPONENT_H
 
-#include "../../lib/glm/glm.hpp"
+#include "glm/glm.hpp"
 #include "../EntityManager.h"
 
 class ProjectileEmitterComponent : public Component {

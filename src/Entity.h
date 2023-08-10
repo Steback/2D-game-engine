@@ -1,9 +1,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <map>
 #include <vector>
 #include <string>
-#include <map>
+#include <typeinfo>
 #include "Constants.h"
 #include "EntityManager.h"
 #include "Component.h"

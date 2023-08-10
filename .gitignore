@@ -3,7 +3,13 @@
 
 # Cmake
 cmake-build-debug/
-buil/
+build/
 
-# C++
+# Binaries
 *.o
+*.exe
+*.so
+*.pdb
+
+# Conan
+CMakeUserPresets.json

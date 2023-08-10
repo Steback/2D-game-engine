@@ -3,7 +3,7 @@
 
 #include "../EntityManager.h"
 #include "../Game.h"
-#include "../../lib/glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <SDL2/SDL.h>
 
 class TransformComponent : public Component {
